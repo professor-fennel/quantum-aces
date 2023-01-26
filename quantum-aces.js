@@ -21,4 +21,8 @@ class Vector {
     this.x = x;
     this.y = y;
   }
+
+  function add(v) {
+    
+  }
 }
