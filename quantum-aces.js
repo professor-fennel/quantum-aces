@@ -1,29 +1,31 @@
 var w, h;
-var game, player;
+var game, player, mouse;
 var ship_test;
 
 function setup() {
   colorMode(RGB, 255, 255, 255, 1);
-  w = 480;
-  h = w;
+  w = windowWidth - 20;
+  h = windowHeight - 20;
   var canvas = createCanvas(w, h);
   canvas.parent('script-box');
   game = new Game();
   player = new Player();
   ship_test = new Ship(100, 100);
+  mouse = new Mouse();
+  noCursor();
 }
 
 function draw() {
+  clear();
   noStroke();
-  fill(0, 0, 0, 0.1);
+  fill(0, 0, 0, 1);
   rect(-10, -10, w + 10, h + 10);
-  fill(40, 200, 40, 1);
-  ellipse(mouseX, mouseY, 10, 10);
-  fill(40, 200, 40, 0.05);
-  ellipse(mouseX, mouseY, 40, 40);
+  // fill(40, 200, 40, 1);
+  // ellipse(mouseX, mouseY, 10, 10);
   ship_test.launch();
   ship_test.move();
   ship_test.illustrate();
+  mouse.illustrate();
 }
 
 class Ship {
@@ -33,7 +35,10 @@ class Ship {
    this.thrust = new Vector(50, 60);
    this.angle = new Vector(0, 0);
    this.inputted_vectors = []
-   this.size = 30;
+   this.size = 40;
+   this.sprite = loadImage("assets/ship-2.png");
+   // this.sprite.image = "assets/ship-1.png";
+   // this.sprite.diameter = this.size;
  }
 
  input_new_vector(v) {
@@ -82,14 +87,15 @@ class Ship {
  }
 
  illustrate() {
-   stroke(150, 250, 210, 1);
-   strokeWeight(8);
-   line(this.position.x, this.position.y,
-    this.position.x + this.angle.x*30,
-    this.position.y + this.angle.y*30);
-   noStroke();
-   fill(150, 250, 210, 1);
-   ellipse(this.position.x, this.position.y, this.size, this.size);
+   // stroke(150, 250, 210, 1);
+   // strokeWeight(8);
+   // line(this.position.x, this.position.y,
+   //  this.position.x + this.angle.x*30,
+   //  this.position.y + this.angle.y*30);
+   // noStroke();
+   // fill(150, 250, 210, 1);
+   // ellipse(this.position.x, this.position.y, this.size, this.size);
+   image(this.sprite, this.position.x - 76*1.5, this.position.y - 111*1.5, 76*3, 111*3);
  }
 }
 
@@ -109,6 +115,31 @@ class Player {
   }
 
   click() {
+  }
+}
+
+class Mouse {
+  constructor() {
+    this.sprites = [
+      loadImage("assets/mouse-1.png"),
+      loadImage("assets/mouse-2.png"),
+      loadImage("assets/mouse-3.png"),
+      loadImage("assets/mouse-4.png"),
+      loadImage("assets/mouse-3.png"),
+      loadImage("assets/mouse-2.png")
+    ]
+    this.frame = 0;
+  }
+
+  illustrate() {
+    if(frameCount%8 == 1) {
+      if(this.frame >= 5) {
+        this.frame = 0;
+      } else {
+        this.frame++;
+      }
+    }
+    image(this.sprites[this.frame], mouseX - 4, mouseY - 4, 44*2, 69*2);
   }
 }
 
@@ -140,6 +171,15 @@ class Vector {
     this.x = 0;
     this.y = 0;
   }
+}
+
+/////////////////////////////////////////// MATH STUFF
+
+function windowResized() {
+  // getCanvasMeasurements()
+  w = windowWidth - 20;
+  h = windowHeight - 20;
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function distance(x1, y1, x2, y2) {
