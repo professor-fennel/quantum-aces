@@ -1,0 +1,7 @@
+1. export pages from remarkable tablet
+2. open in inkscape
+3. edit -> select same -> fill color -> click on the white background and delete it
+4. file -> document properties -> change page color to dark checkerboard
+5. ctrl+a -> change stroke color to white
+6. select piece
+7. export -> selection tab -> shazammooooo
